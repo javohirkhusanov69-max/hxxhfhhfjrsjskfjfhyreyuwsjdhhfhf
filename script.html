@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
-<title>Sign In - ZYLEX</title>
+<title>Sign In - BYTROX</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
@@ -51,13 +51,13 @@ main.login-container{position:absolute;top:41px;left:0;width:100vw;height:calc(1
 <body>
 <header class="toolbar">
 <div class="toolbar-content">
-<span class="toolbar-title">ZYLEX VIP PREDICTOR</span>
+<span class="toolbar-title">BYTROX VIP PREDICTOR</span>
 </div>
 </header>
 <main class="container" style="display:flex;">
 <div class="current-time" id="timer">00 : 10 :00</div>
 <div class="circle-logo-center" title="Open image" onclick="openCenterImage()">
-<img class="logo-bg" src="https://i.postimg.cc/JnGrrsr9/IMG-20251108-201352-523.jpg" alt="Logo">
+<img class="logo-bg" src="https://i.postimg.cc/VN94ngmC/lv-0-20251026084024.gif" alt="Logo">
 <div class="prediction-value" id="crash">0.00</div>
 </div>
 </main>
@@ -65,12 +65,12 @@ main.login-container{position:absolute;top:41px;left:0;width:100vw;height:calc(1
 <canvas id="matrix-canvas"></canvas>
 <div class="center-bg-img" onclick="openCenterImage()"></div>
 <div class="big-logo-header" style="margin-top:120px;">
-<img src="https://i.postimg.cc/JnGrrsr9/IMG-20251108-201352-523.jpg" alt="logo">
+<img src="https://i.postimg.cc/VN94ngmC/lv-0-20251026084024.gif" alt="logo">
 </div>
 <div class="login-content">
 <div class="login-form" id="loginForm" autocomplete="off">
 <div class="game-logo">
-<img src="https://i.postimg.cc/JnGrrsr9/IMG-20251108-201352-523.jpg" alt="Game Logo" id="gameLogo">
+<img src="https://i.postimg.cc/VN94ngmC/lv-0-20251026084024.gif" alt="Game Logo" id="gameLogo">
 <h1 id="gameTitle">لعبة الطيارة</h1>
 </div>
 <div class="form-group">
@@ -86,8 +86,8 @@ main.login-container{position:absolute;top:41px;left:0;width:100vw;height:calc(1
 </div>
 </main>
 <div class="social-circles-bar">
-<a href="https://t.me/ZYLEX_HACK" class="social-circle" target="_blank"><span>@ZYLEX_HACK</span></a>
-<a href="https://t.me/ZYLEX_HACK" class="social-circle" target="_blank"><span>VIP SCRIPT</span></a>
+<a href="https://t.me/BYTROX_1" class="social-circle" target="_blank"><span>@BYTROX_1</span></a>
+<a href="https://t.me/BYTROX_1" class="social-circle" target="_blank"><span>VIP SCRIPT</span></a>
 </div>
 <div id="popup" class="popup">
 <p id="popupMessage">يجب شحن حسابك  بمبلغ 700 جنيه على الأقل ليعمل الهاك بشكل صحيح</p>
@@ -96,7 +96,7 @@ main.login-container{position:absolute;top:41px;left:0;width:100vw;height:calc(1
 <script>
 function startMatrix(){const canvas=document.getElementById('matrix-canvas');if(!canvas)return;const ctx=canvas.getContext('2d');let w=canvas.width=window.innerWidth;let h=canvas.height=window.innerHeight;let fontSize=Math.max(12,Math.floor(w/60));let columns=Math.floor(w/fontSize);let drops=Array.from({length:columns},()=>Math.random()*-100);const chars='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%^&*(){}[]<>|/\\'.split('');function draw(){ctx.fillStyle='rgba(0,0,0,0.18)';ctx.fillRect(0,0,w,h);ctx.font=fontSize+"px monospace";for(let i=0;i<drops.length;i++){const text=chars[Math.floor(Math.random()*chars.length)];const alpha=0.6-Math.random()*0.4;ctx.fillStyle=`rgba(47,255,110,${alpha})`;ctx.fillText(text,i*fontSize,drops[i]*fontSize);drops[i]+=1+Math.random()*6;if(drops[i]*fontSize>h+(Math.random()*200)){drops[i]=Math.random()*-20;}}requestAnimationFrame(draw);}draw();window.addEventListener('resize',()=>{w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;fontSize=Math.max(12,Math.floor(w/60));columns=Math.floor(w/fontSize);drops=Array.from({length:columns},()=>Math.random()*-100);});}
 startMatrix();
-function openCenterImage(){window.open('https://i.postimg.cc/JnGrrsr9/IMG-20251108-201352-523.jpg','_blank');}
+function openCenterImage(){window.open('https://i.postimg.cc/VN94ngmC/lv-0-20251026084024.gif','_blank');}
 function showPopup(message){const popup=document.getElementById('popup');document.getElementById('popupMessage').textContent=message;popup.classList.add('show');}
 function closePopup(){document.getElementById('popup').classList.remove('show');}
 (function countdown(){let total=1800;const el=document.getElementById('timer');function format(s){const mm=Math.floor(s/60);const ss=s%60;return String(mm).padStart(2,'0')+':'+String(ss).padStart(2,'0');}el.textContent=format(total);const t=setInterval(()=>{total--;if(total<0){clearInterval(t);window.location.href='Login.html';return;}el.textContent=format(total);},1000);})();
